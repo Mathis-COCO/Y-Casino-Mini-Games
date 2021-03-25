@@ -248,10 +248,6 @@ def Blackjack_Card(value, suit):
     print(f'                        |    {value:>2} |')
     print('                        └───────┘')
 
-def Navale(cash):
-    test = "tata"
-    print (test)
-
 def Pendu():
     while True:
         words = open('./casino_games/listedemot.txt')
@@ -372,15 +368,21 @@ ChooseGame()
 
 
 
-
-
+# THINGS TO PATCH :
+#___________________________________________________________________________________________________________________________________
+# underscore in Hugo's "Pendu" game
+# cash system
+# finish the BlackJack game
+# verify everything in the menus
+# add a better link between the warship game and the casino
+#___________________________________________________________________________________________________________________________________
 
 
 
 # TRAVAIL :
-#__________________________________________________________________________________________________________
+#___________________________________________________________________________________________________________________________________
 # Paul-Antoine : N/A
 # Diego : Juste prix
 # Hugo : Pendu
-# Mathis: Menus, Roulette, Blackjack, bataille navale, début de jeu pygame, modification du pendu de Hugo
-#__________________________________________________________________________________________________________
+# Mathis: Menus, Roulette, Blackjack, bataille navale, début de jeu pygame, modification du pendu de Hugo et du Juste prix de Diego
+#___________________________________________________________________________________________________________________________________
