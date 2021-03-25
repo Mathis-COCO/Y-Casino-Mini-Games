@@ -28,7 +28,7 @@ def ChooseGame():
     elif user_choice == 2:
         Blackjack(cash)
     elif user_choice == 3:
-        cmd = 'python bataille_navale.py'
+        cmd = 'python ./casino_games/bataille_navale.py'
         os.system(cmd)
     elif user_choice == 4:
         Pendu()
@@ -254,7 +254,7 @@ def Navale(cash):
 
 def Pendu():
     while True:
-        words = open('listedemot.txt')
+        words = open('./casino_games/listedemot.txt')
         choice =words.readlines()
         word =random.choice(choice)
         tries = 7
