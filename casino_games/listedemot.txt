@@ -6,6 +6,8 @@ lundi
 mardi
 mercredi
 jeudi
+homme
+femme
 vendredi
 samedi
 dimanche
@@ -28,3 +30,12 @@ matin
 parler
 manger
 mourir
+pied
+abdoul
+vol
+pâtes
+riz
+train
+alphabet
+golang
+python

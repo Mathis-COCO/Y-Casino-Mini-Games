@@ -23,26 +23,31 @@ def ChooseGame():
     Clear(chosen_game)
     print("Voici la liste de nos jeux : \n\nJeux avec argent :\n 1 - Roulette \n 2 - Blackjack \n 3 - Bataille navale \n\njeux sans argent :\n 4 - Pendu\n 5 - Juste Prix\n")
     user_choice = int(input("A quel jeu souhaitez-vous jouer ?\n"))
-    if user_choice == 1 :
-        Chosen_Roulette()
-    elif user_choice == 2:
-        Blackjack(cash)
-    elif user_choice == 3:
-        cmd = 'python ./casino_games/bataille_navale.py'
-        os.system(cmd)
-    elif user_choice == 4:
-        Pendu()
-    elif user_choice == 5:
-        JustePrix()
+    if user_choice <= 5 and user_choice >= 1 :
+        PlayGameNumber(user_choice)
 
-def PlayAgain(chosen_game):
+def PlayGameNumber(game_number):
+    game_number = game_number-1
+    game_list = [Chosen_Roulette,Blackjack(cash),Pendu,JustePrix,BatailleNavale]
+    game = game_list[game_number]
+    game()
+
+def BatailleNavale():
+    cmd = 'python ./casino_games/bataille_navale.py'
+    os.system(cmd)
+
+
+
+def PlayAgain(chosen_game,game_number):
     Clear(chosen_game)
     print("solde actuel : ", cash,)
     print("jeu actuel : ", chosen_game)
     play_choice = input("\nsouhaitez-vous rejouer au jeu précédent ( oui/non ) ? ")
     if play_choice == "oui" or play_choice == "o" :
         print("starting game...")
+        PlayGameNumber(game_number)
     else:
+        chosen_game = ""
         ChooseGame()
 
 def Chosen_Roulette():
@@ -137,20 +142,21 @@ def Roulette(cash):
             print("Dommage, vous avez perdu votre mise.\n Peut-être une autre fois.")
         time.sleep(6)
         Clear(chosen_game)
-        PlayAgain(chosen_game)
+        PlayAgain(chosen_game,1)
 
 def Blackjack(cash):
+    chosen_game = "BlackJack"
+    i = 0
+    Clear(chosen_game)
+    total = 0
+    total_opponent = 0
     while True:
-        chosen_game = "BlackJack"
         values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
         suits = ['♥','♦','♣','♠']
-        i = 0
-        total = 0
-        total_opponent = 0
         card_A = 0
-
-        Clear(chosen_game)
+        want_to_play = ""
         while i < 2:
+            time.sleep(2)
             value = random.choice(values)
             suit = random.choice(suits)
             Blackjack_Card(value, suit)
@@ -176,7 +182,7 @@ def Blackjack(cash):
             print(total)
             i+=1
         if total < 21:
-            want_to_play = input("Voulez-vous augmenter votre nombre de cartes ?")
+            want_to_play = input("Voulez-vous augmenter votre nombre de cartes ? ")
         if want_to_play == "oui" or want_to_play == "o" or want_to_play == "yes":
             value = random.choice(values)
             suit = random.choice(suits)
@@ -222,19 +228,19 @@ def Blackjack(cash):
             print('La somme de vos cartes a dépassé 21.\nVous avez perdu')
             time.sleep(3)
             Clear(chosen_game)
-            PlayAgain(chosen_game)
+            PlayAgain(chosen_game,2)
         if want_to_play == False:
             if total < total_opponent:
                 print(f'Vous avez perdu, le score ennemi était de {total_opponent}')
                 time.sleep(3)
                 Clear(chosen_game)
-                PlayAgain(chosen_game)
+                PlayAgain(chosen_game,2)
             else:
                 if total > total_opponent:
                     print(f'Vous avez gagné ! Le score ennemi était de {total_opponent}')
                     time.sleep(3)
                     Clear(chosen_game)
-                    PlayAgain(chosen_game)
+                    PlayAgain(chosen_game,2)
 
     # random card draw for oppponent
     # random suit for opponent
@@ -284,7 +290,7 @@ def Pendu():
                     print(f'\n            Perdu ! Le mot était : {word}')
                     time.sleep(5)
                     Clear(chosen_game)
-                    PlayAgain(chosen_game)
+                    PlayAgain(chosen_game,4)
             display = ""
             for x in word :
                 if x in letters_found:
@@ -294,7 +300,7 @@ def Pendu():
                     if "_" not in display:
                         print("Bien Joué")
                         Clear(chosen_game)
-                        PlayAgain(chosen_game)
+                        PlayAgain(chosen_game,4)
 
 def JustePrix():
     while True:
@@ -326,7 +332,7 @@ def JustePrix():
                 tries = 0
                 healt = 5
                 time.sleep(2.5)
-                PlayAgain(chosen_game)
+                PlayAgain(chosen_game,5)
             if healt == 0:
                 if var < n and var not in prev_answers:
                     answer = ": Trop bas !"
@@ -345,7 +351,7 @@ def JustePrix():
                 time.sleep(2.5)
                 print(f'le chiffre était : {n}')
                 time.sleep(3)
-                PlayAgain(chosen_game)
+                PlayAgain(chosen_game,5)
 
             print("\n")
             Clear(chosen_game)
@@ -375,6 +381,7 @@ ChooseGame()
 # finish the BlackJack game
 # verify everything in the menus
 # add a better link between the warship game and the casino
+# add opponent's drawing cards when his score is inferior to 17
 #___________________________________________________________________________________________________________________________________
 
 
@@ -385,4 +392,5 @@ ChooseGame()
 # Diego : Juste prix
 # Hugo : Pendu
 # Mathis: Menus, Roulette, Blackjack, bataille navale, début de jeu pygame, modification du pendu de Hugo et du Juste prix de Diego
+# Lucas (externe au projet): Debug du play again de Mathis
 #___________________________________________________________________________________________________________________________________
