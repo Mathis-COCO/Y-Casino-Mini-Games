@@ -150,6 +150,8 @@ def Blackjack(cash):
     Clear(chosen_game)
     total = 0
     total_opponent = 0
+    player_cards = []
+    player_suits = [] 
     while True:
         values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
         suits = ['♥','♦','♣','♠']
@@ -160,6 +162,8 @@ def Blackjack(cash):
             value = random.choice(values)
             suit = random.choice(suits)
             Blackjack_Card(value, suit)
+            player_cards.append(value)
+            player_suits.append(suit)
             if value == 'A':
                 try :
                     card_A = int(input("Vous avez un as, voulez-vous qu'il compte pour :\n- 1 point ou\n-11 points ? "))
@@ -184,8 +188,17 @@ def Blackjack(cash):
         if total < 21:
             want_to_play = input("Voulez-vous augmenter votre nombre de cartes ? ")
         if want_to_play == "oui" or want_to_play == "o" or want_to_play == "yes":
+            j = 0
+            Clear(chosen_game)
+            while j<len(player_cards):
+                prev_card = player_cards[j]
+                prev_suit = player_suits[j]
+                Blackjack_Card(prev_card, prev_suit)
+                j += 1
             value = random.choice(values)
             suit = random.choice(suits)
+            player_cards.append(value)
+            player_suits.append(suit)
             Blackjack_Card(value, suit)
             if value == 'A':
                 try :
@@ -210,13 +223,16 @@ def Blackjack(cash):
             time.sleep(2)
             i = 0
             while i < 2:
-                value = random.choice(values)
-                if value == 'A':
-                    total_opponent += 11
-                elif value == 'J' or value == 'Q' or value =='K':
+                opponent_suit = random.choice(suits)
+                opponent_value = random.choice(values)
+                if opponent_value == 'A':
+                    total_opponent += random.randint(1,11)
+                elif opponent_value == 'J' or opponent_value == 'Q' or opponent_value =='K':
                     total_opponent += 10
                 else :
-                    total_opponent += value
+                    total_opponent += opponent_value
+                Blackjack_Card(opponent_value,opponent_suit)
+                print(total_opponent)
                 i += 1
             want_to_play = False
 
@@ -224,26 +240,28 @@ def Blackjack(cash):
 
         if total == 21:
             print('Bien joué, vous avez fait un blackjack !')
+            time.sleep(4.5)
+            Clear(chosen_game)
+            PlayAgain(chosen_game,2)
         if total > 21:
             print('La somme de vos cartes a dépassé 21.\nVous avez perdu')
-            time.sleep(3)
+            time.sleep(4.5)
             Clear(chosen_game)
             PlayAgain(chosen_game,2)
         if want_to_play == False:
             if total < total_opponent:
                 print(f'Vous avez perdu, le score ennemi était de {total_opponent}')
-                time.sleep(3)
+                time.sleep(4.5)
                 Clear(chosen_game)
                 PlayAgain(chosen_game,2)
             else:
                 if total > total_opponent:
                     print(f'Vous avez gagné ! Le score ennemi était de {total_opponent}')
-                    time.sleep(3)
+                    time.sleep(4.5)
                     Clear(chosen_game)
                     PlayAgain(chosen_game,2)
 
-    # random card draw for oppponent
-    # random suit for opponent
+    # opponent drawing card if opponent_total <= 16
 
 def Blackjack_Card(value, suit):
     print('                        ┌───────┐')
@@ -378,8 +396,7 @@ ChooseGame()
 #___________________________________________________________________________________________________________________________________
 # underscore in Hugo's "Pendu" game
 # cash system
-# finish the BlackJack game
-# verify everything in the menus
+# add opponent's play in blackjack game
 # add a better link between the warship game and the casino
 # add opponent's drawing cards when his score is inferior to 17
 #___________________________________________________________________________________________________________________________________
