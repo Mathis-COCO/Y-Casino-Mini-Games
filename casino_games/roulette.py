@@ -3,8 +3,7 @@ import random
 import os
 import time
 import sys
-import tkinter as tk
-from tkinter import END
+from colorama import Fore
 
 cash = 500
 
@@ -12,23 +11,20 @@ def Clear(chosen_game):
     os.system('cls')
     print(f'_________________ JEU CHOISI : {chosen_game} _________________\n\n')
 
-def Menu() :
-    print(f'Votre solde actuel : {cash}€\n')
-
 def ChooseGame():
     chosen_game = "Casino"
     Clear(chosen_game)
     print("Bienvenue au Ycasino, le casino de Ynov \n")
     time.sleep(3.5)
     Clear(chosen_game)
-    print("Voici la liste de nos jeux : \n\nJeux avec argent :\n 1 - Roulette \n 2 - Blackjack \n 3 - Bataille navale \n\njeux sans argent :\n 4 - Pendu\n 5 - Juste Prix\n")
+    print("Voici la liste de nos jeux : \n\nJeux avec argent :\n 1 - Roulette \n 2 - Blackjack \n\njeux sans argent : \n 3 - Bataille navale\n 4 - Pendu\n 5 - Juste Prix\n 6 - Pierre Papier Ciseaux\n")
     user_choice = int(input("A quel jeu souhaitez-vous jouer ?\n"))
-    if user_choice <= 5 and user_choice >= 1 :
+    if user_choice <= 6 and user_choice >= 1 :
         PlayGameNumber(user_choice)
 
 def PlayGameNumber(game_number):
     game_number = game_number-1
-    game_list = [Chosen_Roulette,Blackjack(cash),Pendu,JustePrix,BatailleNavale]
+    game_list = [Chosen_Roulette,Blackjack,BatailleNavale,Pendu,JustePrix,RockPS]
     game = game_list[game_number]
     game()
 
@@ -36,11 +32,8 @@ def BatailleNavale():
     cmd = 'python ./casino_games/bataille_navale.py'
     os.system(cmd)
 
-
-
 def PlayAgain(chosen_game,game_number):
     Clear(chosen_game)
-    print("solde actuel : ", cash,)
     print("jeu actuel : ", chosen_game)
     play_choice = input("\nsouhaitez-vous rejouer au jeu précédent ( oui/non ) ? ")
     if play_choice == "oui" or play_choice == "o" :
@@ -54,7 +47,7 @@ def Chosen_Roulette():
     chosen_game = "Roulette"
     while True :
         Clear(chosen_game)
-        Menu()
+        print(f'Votre solde actuel : {cash}€\n')
         want_to_play = input("Souhaitez-vous jouer à la roulette ( oui/non ) ? ")
         if want_to_play == "o" or want_to_play == "oui" :
             Roulette(cash)
@@ -79,7 +72,7 @@ def Roulette(cash):
 
     while keep_playing == True:
         Clear(chosen_game)
-        Menu()
+        print(f'Votre solde actuel : {cash}€\n')
 
         try :
             chosen_number = int(input("Choisissez le numéro sur lequel miser : \n"))
@@ -144,14 +137,14 @@ def Roulette(cash):
         Clear(chosen_game)
         PlayAgain(chosen_game,1)
 
-def Blackjack(cash):
+def Blackjack():
     chosen_game = "BlackJack"
     i = 0
     Clear(chosen_game)
     total = 0
     total_opponent = 0
     player_cards = []
-    player_suits = [] 
+    player_suits = []
     while True:
         values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
         suits = ['♥','♦','♣','♠']
@@ -183,18 +176,23 @@ def Blackjack(cash):
             else :
                 total += value
             print('\n')
-            print(total)
             i+=1
-        if total < 21:
-            want_to_play = input("Voulez-vous augmenter votre nombre de cartes ? ")
+        print(f'                Somme de vos cartes : {total}\n\n')
+        while True :
+            if total < 21 or total < total_opponent :
+                want_to_play = input("Voulez-vous augmenter votre nombre de cartes ? ")
+                break
         if want_to_play == "oui" or want_to_play == "o" or want_to_play == "yes":
-            j = 0
             Clear(chosen_game)
+            j = 0
             while j<len(player_cards):
                 prev_card = player_cards[j]
                 prev_suit = player_suits[j]
                 Blackjack_Card(prev_card, prev_suit)
+                if j == len(player_cards):
+                    print(f'                Somme de vos cartes : {total}\n\n')
                 j += 1
+
             value = random.choice(values)
             suit = random.choice(suits)
             player_cards.append(value)
@@ -220,23 +218,46 @@ def Blackjack(cash):
                 total += value
         else:
             print("Votre adversaire joue...")
-            time.sleep(2)
             i = 0
             while i < 2:
+                time.sleep(2)
                 opponent_suit = random.choice(suits)
                 opponent_value = random.choice(values)
                 if opponent_value == 'A':
-                    total_opponent += random.randint(1,11)
+                    if total_opponent <= 10:
+                        total_opponent += 11
+                    else:
+                        total_opponent += random.randint(1,11)
                 elif opponent_value == 'J' or opponent_value == 'Q' or opponent_value =='K':
                     total_opponent += 10
                 else :
                     total_opponent += opponent_value
                 Blackjack_Card(opponent_value,opponent_suit)
-                print(total_opponent)
                 i += 1
+            while total_opponent < total :
+                opponent_value = random.choice(values)
+                opponent_suit = random.choice(suits)
+                Blackjack_Card(opponent_value, opponent_suit)
+                if opponent_value == 'A':
+                    if total_opponent <= 10:
+                        total_opponent += 11
+                    else:
+                        total_opponent += 1
+                elif opponent_value == 'J' or opponent_value == 'Q' or opponent_value =='K':
+                    total_opponent += 10
+                else :
+                    total_opponent += opponent_value
+                if total_opponent == 21 :
+                    print("Le croupier a fait un blackjack")
+                    time.sleep(4.5)
+                    Clear(chosen_game)
+                    PlayAgain(chosen_game,2)
+                if total_opponent > 21:
+                    print("Vous avez gagné, le score du croupier a dépassé 21")
+                    time.sleep(4.5)
+                    Clear(chosen_game)
+                    PlayAgain(chosen_game,2)
             want_to_play = False
-
-        print(f'                Somme de vos cartes : {total}\n\n')
 
         if total == 21:
             print('Bien joué, vous avez fait un blackjack !')
@@ -248,18 +269,6 @@ def Blackjack(cash):
             time.sleep(4.5)
             Clear(chosen_game)
             PlayAgain(chosen_game,2)
-        if want_to_play == False:
-            if total < total_opponent:
-                print(f'Vous avez perdu, le score ennemi était de {total_opponent}')
-                time.sleep(4.5)
-                Clear(chosen_game)
-                PlayAgain(chosen_game,2)
-            else:
-                if total > total_opponent:
-                    print(f'Vous avez gagné ! Le score ennemi était de {total_opponent}')
-                    time.sleep(4.5)
-                    Clear(chosen_game)
-                    PlayAgain(chosen_game,2)
 
     # opponent drawing card if opponent_total <= 16
 
@@ -285,9 +294,10 @@ def Pendu():
         used_letters = []
         Clear(chosen_game)
 
-        while letter < len(word)-1:
+        while letter < len(word):
             letter += 1
             display += "_ "
+            print(letter)
         while tries > 0:
             Clear(chosen_game)
             print(" ".join(map(str, used_letters)))
@@ -316,7 +326,8 @@ def Pendu():
                 else:
                     display += "_ "
                     if "_" not in display:
-                        print("Bien Joué")
+                        print("Bien joué, vous avez trouvé le bon mot")
+                        time.sleep(4)
                         Clear(chosen_game)
                         PlayAgain(chosen_game,4)
 
@@ -330,7 +341,7 @@ def JustePrix():
         prev_answers = []
 
         while tries < 5:
-            healt = 4 - tries
+            remaining_tries = 4 - tries
             var = int(input("Entrez un nombre entre 0 et 100 : "))
             if var < n and var not in prev_answers :
                 answer = ": Trop bas !"
@@ -348,10 +359,10 @@ def JustePrix():
                 print(var, answer)
                 prev_answers = []
                 tries = 0
-                healt = 5
+                remaining_tries = 5
                 time.sleep(2.5)
                 PlayAgain(chosen_game,5)
-            if healt == 0:
+            if remaining_tries == 0:
                 if var < n and var not in prev_answers:
                     answer = ": Trop bas !"
                     prev_answers.append(var)
@@ -374,38 +385,94 @@ def JustePrix():
             print("\n")
             Clear(chosen_game)
             print(" ".join(map(str, prev_answers)))
-            print(f'\nIl vous reste : {healt} essais\n')
+            print(f'\nIl vous reste : {remaining_tries} essais\n')
             tries += 1
 
+def RockPS():
+    chosen_game = "Pierre Papier Ciseaux"
+    Clear(chosen_game)
+    AI_choice = randint(1,3)
+    ally = Fore.BLUE
+    ennemy = Fore.RED
+    print("1 - Pierre\n2 - Papier\n3 - Ciseaux\n")
+    while True:
+        try :
+            player_choice = int(input("Votre choix : "))
+        except ValueError:
+            print("Veuillez choisir 1, 2 ou 3")
+            time.sleep(2)
+            Clear(chosen_game)
+            print("1 - Pierre\n2 - Papier\n3 - Ciseaux\n") 
+            continue
+        else :
+            if 1 <= player_choice <= 3 :
+                print("Pierre")
+                time.sleep(1)
+                print("papier")
+                time.sleep(1)
+                print("ciseaux")
+                Clear(chosen_game)
+                RPS(player_choice, ally)
+                RPS(AI_choice, ennemy)
+                if player_choice == AI_choice :
+                    time.sleep(2)
+                    print(Fore.WHITE + "égalité ! Veuillez choisir à nouveau...")
+                    time.sleep(4)
+                    RockPS()
+                elif (player_choice == 1 and AI_choice == 2) or (player_choice == 2 and AI_choice == 3) or (player_choice == 3 and AI_choice == 1):
+                    time.sleep(2)
+                    print(Fore.WHITE + 'vous avez perdu, dommage.')
+                    time.sleep(4)
+                    Clear(chosen_game)
+                    PlayAgain(chosen_game, 6)
+                else :
+                    time.sleep(2)
+                    print(Fore.WHITE + 'Bien joué ! Vous avez gagné.')
+                    time.sleep(4)
+                    Clear(chosen_game)
+                    PlayAgain(chosen_game, 6)
+
+def RPS(player_choice, color) :
+    if player_choice == 1:
+        print(color + """
+                _______
+            ---'   ____)
+                  (_____)
+                  (_____)
+                  (____)
+            ---.__(___)
+            """)
+    elif player_choice == 2 :
+        print(color + """
+             _______
+        ---'    ____)____
+                   ______)
+                  _______)
+                 _______)
+        ---.__________)
+        """)
+    elif player_choice == 3 :
+        print(color + """
+            _______
+        ---'   ____)____
+                  ______)
+               __________)
+              (____)
+        ---.__(___)
+        """)
+
 ChooseGame()
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # THINGS TO PATCH :
 #___________________________________________________________________________________________________________________________________
 # underscore in Hugo's "Pendu" game
-# cash system
-# add opponent's play in blackjack game
-# add a better link between the warship game and the casino
-# add opponent's drawing cards when his score is inferior to 17
 #___________________________________________________________________________________________________________________________________
 
 
 
 # TRAVAIL :
 #___________________________________________________________________________________________________________________________________
-# Paul-Antoine : N/A
+# Paul-Antoine : Pierre Papier Ciseaux
 # Diego : Juste prix
 # Hugo : Pendu
 # Mathis: Menus, Roulette, Blackjack, bataille navale, début de jeu pygame, modification du pendu de Hugo et du Juste prix de Diego
