@@ -14,11 +14,17 @@ def ChooseGame():
     Clear(chosen_game)
     print("Bienvenue au Ycasino, le casino de Ynov, le casino gratuit d'entrée \n")
     time.sleep(3.5)
-    Clear(chosen_game)
-    print("Voici la liste de nos jeux : \n\n 1 - Roulette \n 2 - Blackjack \n 3 - Bataille navale\n 4 - Pendu\n 5 - Juste Prix\n 6 - Pierre Papier Ciseaux\n 7 - TicTacToe\n")
-    user_choice = int(input("A quel jeu souhaitez-vous jouer ?\n"))
-    if user_choice <= 7 and user_choice >= 1 :
-        PlayGameNumber(user_choice)
+    while True:
+        Clear(chosen_game)
+        print("Voici la liste de nos jeux : \n\n 1 - Roulette \n 2 - Blackjack \n 3 - Bataille navale\n 4 - Pendu\n 5 - Juste Prix\n 6 - Pierre Papier Ciseaux\n 7 - TicTacToe\n")
+        try:
+            user_choice = int(input("A quel jeu souhaitez-vous jouer ?\n"))
+        except ValueError:
+            print("veuillez choisir un nombre valide")
+        else:
+            if 0 < user_choice <=7:
+                break
+    PlayGameNumber(user_choice)
 
 def PlayGameNumber(game_number):
     game_number = game_number-1
