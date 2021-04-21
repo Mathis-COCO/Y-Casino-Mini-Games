@@ -5,8 +5,6 @@ import time
 import sys
 from colorama import Fore
 
-cash = 500
-
 def Clear(chosen_game):
     os.system('cls')
     print(f'_________________ JEU CHOISI : {chosen_game} _________________\n\n')
@@ -29,6 +27,8 @@ def PlayGameNumber(game_number):
     game()
 
 def BatailleNavale():
+    chosen_game = 'BatailleNavale'
+    Clear(chosen_game)
     cmd = 'python ./casino_games/bataille_navale.py'
     os.system(cmd)
 
@@ -47,10 +47,9 @@ def Chosen_Roulette():
     chosen_game = "Roulette"
     while True :
         Clear(chosen_game)
-        print(f'Votre solde actuel : {cash}€\n')
         want_to_play = input("Souhaitez-vous jouer à la roulette ( oui/non ) ? ")
         if want_to_play == "o" or want_to_play == "oui" :
-            Roulette(cash)
+            Roulette()
             Clear(chosen_game)
             break
         else :
@@ -65,14 +64,13 @@ def Chosen_Roulette():
                 if want_to_play == "n" or want_to_play == "non" or want_to_play == "no":
                     return None
 
-def Roulette(cash):
+def Roulette():
     keep_playing = True
     show_numbers = 0
     chosen_game = "Roulette"
 
     while keep_playing == True:
         Clear(chosen_game)
-        print(f'Votre solde actuel : {cash}€\n')
 
         try :
             chosen_number = int(input("Choisissez le numéro sur lequel miser : \n"))
@@ -91,18 +89,6 @@ def Roulette(cash):
             print("Couleur associée à votre numéro: Rouge")
 
         Clear(chosen_game)
-        try :
-            bet = int(input("Combien d'argent souhaitez-vous miser ? \n"))
-        except ValueError:
-            print("Veuillez miser de l'argent pour pouvoir jouer.")
-        except NameError:
-            print("Veuillez miser de l'argent pour jouer au jeu.")
-        else :
-            while bet > cash or bet == 0 or bet <= 0 :
-                print ("Vous possédez ", cash ,". Veuillez choisir un nommbre choisi entre 1 et ", cash)
-                bet = int(input("Veuillez saisir une somme entre 1 et ", cash))
-                cash -= bet
-                print("Votre solde actuel : ", cash ,"\n")
 
         while show_numbers < 100 :
             Clear(chosen_game)
@@ -127,12 +113,9 @@ def Roulette(cash):
         show_numbers = 0
 
         if chosen_number%2 == random_number%2 :
-            earned_cash = bet/2
-            print("Dommage, vous avez perdu 50%' de votre mise.")
-            cash += earned_cash
-            print("Désormais votre solde s'estime à", cash)
+            print("Dommage, vous avez perdu, mais le numéro était de la même couleur .")
         else:
-            print("Dommage, vous avez perdu votre mise.\n Peut-être une autre fois.")
+            print("Dommage, vous avez perdu et votre numéro n'était pas de la bonne couleur.\n Peut-être une autre fois.")
         time.sleep(6)
         Clear(chosen_game)
         PlayAgain(chosen_game,1)

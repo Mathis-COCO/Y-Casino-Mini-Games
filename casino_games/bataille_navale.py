@@ -1,13 +1,21 @@
 from random import randint
-import tkinter
+import os
+import time
 
 grille = []
 grille1 = []
+
+chosen_game = 'bataille navale'
+
+def Clear(chosen_game):
+    os.system('cls')
+    print(f'_________________ JEU CHOISI : {chosen_game} _________________\n\n')
 
 for x in range(6):
     grille.append(["O"] * 6)
 
 def print_grille(grille):
+    Clear(chosen_game)
     print('================')
     print()
     print('grille ennemie:')
@@ -159,9 +167,11 @@ for tour in range(nbtour):
             boat4 = 0
         print('\nTu a coulé un navire ennemi!\n\nBien joué matelot')
         grille[devine_rangee][devine_colonne] = "X"
+        time.sleep(3)
 
     if ((boat1==0) and (boat2==0) and (boat3==0) and (boat4==0)):
         print('\nFélicitations matelot, tu as coulé toute la flotte ennemie!\n')
+        time.sleep(3)
         break
     else:
         if ((devine_rangee < 0 or devine_rangee > 9) or (devine_colonne < 0 or devine_colonne > 9)):
@@ -169,8 +179,9 @@ for tour in range(nbtour):
         elif(grille[devine_rangee][devine_colonne] == "X"):
             print("\nTu as déjà choisi cet endroit, dommage.")
         else:
-            grille[devine_rangee][devine_colonne] = "X"
+            grille[devine_rangee][devine_colonne] = "~"
             print("\nLoupé!")
+        time.sleep(1.5)
     if (randomrangeeIA == rangee_perso and randomcolonneIA == colonne_perso) or (randomrangeeIA == rangee_perso2 and randomcolonneIA == colonne_perso2) or (randomrangeeIA == rangee_perso3 and randomcolonneIA == colonne_perso3) or (randomrangeeIA == rangee_perso4 and randomcolonneIA == colonne_perso4):
         if randomrangeeIA == rangee_perso and randomcolonneIA == colonne_perso:
             boatperso1=0
@@ -182,20 +193,24 @@ for tour in range(nbtour):
             boatperso4=0
         print("\nMince! Un de tes navires a été coulé par l'ennemi !\n")
         grille1[randomrangeeIA][randomcolonneIA] = "X"
+        time.sleep(3)
 
     if(boatperso1==0) and (boatperso2==0) and (boatperso3==0) and (boatperso4==0):
         print("\nMince! Tous vos bateaux ont été coulés par l'ennemi\n")
         print(f'Les navires rivaux étaient en: col {random_colonne(grille)} ran {random_rangee(grille)}, en col {random_colonne2(grille)} et en ran {random_rangee2(grille)} , en col {random_colonne3(grille)} et en ran {random_rangee3(grille)} , puis en col {random_colonne4(grille)} et en ran {random_rangee4(grille)}\n')
+        time.sleep(3)
         break
     else:
         if (randomrangeeIA and randomcolonneIA == "X"):
             print('\nVotre ennemi a déjà attaqué cet endroit.')
         else:
             grille1[randomrangeeIA][randomcolonneIA]="X"
-            print("\nVotre ennemi ne t'a pas touché.\n")
+            print("\nVotre ennemi ne vous a pas touché.\n")
             if tour==nbtour:
                 print("PERDU, vous n'avez plus de coups.\n")
+                time.sleep(1.5)
                 break
+        time.sleep(1.5)
 
         print_grille(grille)
         print_grille1(grille1)
