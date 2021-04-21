@@ -14,17 +14,17 @@ def Clear(chosen_game):
 def ChooseGame():
     chosen_game = "Casino"
     Clear(chosen_game)
-    print("Bienvenue au Ycasino, le casino de Ynov \n")
+    print("Bienvenue au Ycasino, le casino de Ynov, le casino gratuit d'entrée \n")
     time.sleep(3.5)
     Clear(chosen_game)
-    print("Voici la liste de nos jeux : \n\nJeux avec argent :\n 1 - Roulette \n 2 - Blackjack \n\njeux sans argent : \n 3 - Bataille navale\n 4 - Pendu\n 5 - Juste Prix\n 6 - Pierre Papier Ciseaux\n")
+    print("Voici la liste de nos jeux : \n\n 1 - Roulette \n 2 - Blackjack \n 3 - Bataille navale\n 4 - Pendu\n 5 - Juste Prix\n 6 - Pierre Papier Ciseaux\n 7 - TicTacToe\n")
     user_choice = int(input("A quel jeu souhaitez-vous jouer ?\n"))
-    if user_choice <= 6 and user_choice >= 1 :
+    if user_choice <= 7 and user_choice >= 1 :
         PlayGameNumber(user_choice)
 
 def PlayGameNumber(game_number):
     game_number = game_number-1
-    game_list = [Chosen_Roulette,Blackjack,BatailleNavale,Pendu,JustePrix,RockPS]
+    game_list = [Chosen_Roulette,Blackjack,BatailleNavale,Pendu,JustePrix,RockPS,TicTacToe]
     game = game_list[game_number]
     game()
 
@@ -461,6 +461,10 @@ def RPS(player_choice, color) :
         ---.__(___)
         """)
 
+def TicTacToe():
+    cmd = 'python ./casino_games/tictactoe.py'
+    os.system(cmd)
+
 ChooseGame()
 
 # THINGS TO PATCH :
@@ -472,9 +476,9 @@ ChooseGame()
 
 # TRAVAIL :
 #___________________________________________________________________________________________________________________________________
-# Paul-Antoine : Pierre Papier Ciseaux
+# Paul-Antoine : Pierre Papier Ciseaux, snake (not working)
 # Diego : Juste prix
 # Hugo : Pendu
 # Mathis: Menus, Roulette, Blackjack, bataille navale, début de jeu pygame, modification du pendu de Hugo et du Juste prix de Diego
-# Lucas (externe au projet): Debug du play again de Mathis
+# Yrlan : Tic Tac Toe
 #___________________________________________________________________________________________________________________________________
