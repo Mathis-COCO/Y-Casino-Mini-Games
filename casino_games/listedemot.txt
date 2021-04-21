@@ -31,7 +31,6 @@ parler
 manger
 mourir
 pied
-abdoul
 vol
 pâtes
 riz
