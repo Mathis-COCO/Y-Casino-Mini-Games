@@ -8,15 +8,15 @@ pygame.init()                                                                   
 screen = pygame.display.set_mode((1920, 950))
 
 # background
-background = pygame.image.load('adventure game\img/background_marineford.png')
+background = pygame.image.load('adventure_game/img/background_marineford.png')
 
 # Icon and title of the game
-icon = pygame.image.load('adventure game\img/logo.png')
+icon = pygame.image.load('adventure_game\img\logo.png')
 pygame.display.set_icon(icon)
 pygame.display.set_caption("One Piece Adventure")
 
 # player
-playerImg = pygame.image.load('adventure game\img/luffy_balloon.gif')
+playerImg = pygame.image.load('adventure_game\img\luffy_balloon_attack.gif')
 playerX = 20
 playerY = 800
 playerX_change = 0

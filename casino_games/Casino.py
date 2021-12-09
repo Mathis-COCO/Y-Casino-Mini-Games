@@ -2,7 +2,6 @@ from random import randint
 import random
 import os
 import time
-import sys
 from colorama import Fore
 
 def Clear(chosen_game):
