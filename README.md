@@ -8,6 +8,7 @@ This projects features the following games :
 - Blackjack
 - Battleship game
 - A project game that is in progress
-
 - Pendu
 - Juste prix
+- Tic Tac Toe
+- Rock Paper Scissors
